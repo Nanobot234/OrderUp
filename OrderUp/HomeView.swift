@@ -11,6 +11,12 @@ import SwiftUI
 
 struct HomeView: View {
     //TODO: Need to add a dismiss in the enviromnment!!
+    //managed object
+    
+    @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var firebaseManager: FirebaseManager
+    
+        //the fetched array of Vendor items from Core Data.
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var StoreItems: FetchedResults<Item>
     
     @State private var showingAddItemScreen = false
@@ -22,49 +28,43 @@ struct HomeView: View {
                     ForEach(StoreItems) {item in
                         NavigationLink {
                             //class for sheet is here
+                            EditItemDetailsView(item: item, itemID: item.id!)
+                                //this is the item, so will actually do the saving here!
+                                //or will change the items list here, 
+                            
                         } label: {
                             
-                    
-                            VStack {
+                            VStack(alignment: .leading, spacing:25) {
                                 HStack {
-                                    
-                                    //                                Rectangle()
-                                    //                                    .frame(width: 100,height:100)
-                                    //                                    .foregroundColor(Color.gray)
-                                    
-                                   
-                                    
                                     let itemImage = UIImage(data: item.image!)
                                     
                                     let imageDisplayed = Image(uiImage: itemImage!)
                                    
-                                    
                                     imageDisplayed
                                         .resizable()
                                         .frame(width:100,height: 100)
                                         .cornerRadius(25)
                                         .scaledToFit()
+                                        .border(.red)
                                     
                                     
-                                   
-                                    
-                                    VStack {
+                                    VStack(alignment: .leading, spacing:12) {
                                         Text(item.name ?? "")
-                                            .padding()
+                                        
+                                        
                                         Text("Price: " + item.price.formatted())
-                                        
-                                        
                                     }
+                                    .border(.red)
                                     .padding(.leading,50)
                                     //.padding(EdgeInsets( leading: 2))
                                     
-                                    
                                 }
-                                //adding floating button in the bottom of the screen!!
-                                
+                              
                                 Text(item.itemDescription!)
-                                    .padding([.top],20)//dont format siunce you have string
-            
+                                    .multilineTextAlignment(.leading)
+                                    //.padding([.top],20)//dont format siunce you have string
+                                    .border(.red)
+                                    
                             }
                             
                         }
@@ -72,6 +72,7 @@ struct HomeView: View {
                        
                     }
                    //Spacer()
+                    .onDelete(perform: deleteItems)
                     .background(RoundedRectangle(cornerRadius: 12).fill(.white))
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
@@ -82,17 +83,44 @@ struct HomeView: View {
                
                 .navigationTitle("My Items")
                 
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        EditButton()
+                    }
+                }
                 .sheet(isPresented: $showingAddItemScreen) {
                    newItemUploadView()
                 }
                 
                 AddItemButton(showingScreen: $showingAddItemScreen)
                 
+            
             }
         }
     }
+    
+        //may need to add an alert for this
+    
+    func deleteItems(at offsets:IndexSet) {
+        
+        
+        //ah, this deletes an item at the specifed offset, in the list. likley can save the offset
+        //but will have to change this fucntion to maybe run when the list changes as well
+        for offset in offsets {
+            let storeItem = StoreItems[offset]
+            
+            firebaseManager.deleteVendorItem(itemID: storeItem.id!) {result in
+                if(result) {
+                    moc.delete(storeItem)
+                }
+            }
+        }
+        
+        try? moc.save()
+    
+    }
 }
-
+ 
 
 //struct for the button at the bottom of the screen
 struct AddItemButton: View {

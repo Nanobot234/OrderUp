@@ -2,7 +2,7 @@
 //  PersistenceController.swift
 //  OrderUp
 //
-//  Created by Nana Bonsu on 6/7/23.
+//  Created by Nana Bonsu on 8/2/23.
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import CoreData
 
 class PersistenceController: ObservableObject {
     
-    let container = NSPersistentContainer(name:"OrderUp")
+    let container = NSPersistentContainer(name:"newOrderupModel")
     
     
     init() {
