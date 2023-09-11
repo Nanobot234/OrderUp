@@ -110,8 +110,6 @@ struct EditItemDetailsView: View {
         _newItemPrice = State(initialValue: item.price)
         _newItemImageData = State(initialValue: item.image!)
         
-    
-       
         _myItems = FetchRequest(sortDescriptors: [],
                                 predicate: NSPredicate(format: "id == %@", self.itemID),
                                 animation: .default)
@@ -120,9 +118,14 @@ struct EditItemDetailsView: View {
      
     }
     
+    
+    
+    /// Updates item then resaves in coreData also uploads to Firebase
+    ///
+    /// - Parameter items: <#items description#>
     func fetchFomCoreDatandEditWithID(items: FetchedResults<Item>) {
         
-        //line is a problem?
+       
         
         if let fetchedItem = items.first {
             //now will change the items here and then save it back in coreData
@@ -135,7 +138,6 @@ struct EditItemDetailsView: View {
             
             //write the chnaged info to fireabse
             self.firebaseManager.writeToFirebase(itemName: fetchedItem.name!, itemDescription:fetchedItem.itemDescription! , itemPrice: fetchedItem.price, image: UIImage(data: fetchedItem.image!)!, itemID: fetchedItem.id!)
-            
             
             do {
                 try managedViewContext.save()
