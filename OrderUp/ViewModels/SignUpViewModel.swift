@@ -8,6 +8,7 @@
 import Foundation
 import ActionButton
 import Firebase
+import SwiftUI
 ///this class will fetch the custoemr orders from the firebase
 
 //each order will have an order id, and an array of order items
@@ -16,10 +17,19 @@ import Firebase
 //Model class supports phone Number authentication for now
 //might need to change name toLOgin
 
+
 @MainActor class SignUpViewModel:ObservableObject {
     
     
     //action button state
+    
+    @Published var loginStatus: Bool {
+        didSet {
+            UserDefaults.standard.set(loginStatus,forKey: "log_Status")
+        } //will change the login status based oon this line here!, updates the environment as well
+       
+    }
+    
     
     
     @Published var mobileNumber: String = ""
@@ -27,7 +37,7 @@ import Firebase
     
     @Published var email: String = ""
     @Published var password = ""
-    @Published var phoneVerificationId = ""
+    @Published var phoneVerificationCode = ""
     
     @Published var showAlert = false
     @Published var errorMessage = "" //error message that is shown when phone auth has a problem
@@ -36,50 +46,75 @@ import Firebase
     //Verification ID credential
     @Published var idCredential = ""
    
+
     
-    private func verifyUserPhoneNumber() {
-        PhoneAuthProvider.provider().verifyPhoneNumber("+\(countryCode + mobileNumber)", uiDelegate: nil) {idCredential, err in
+    /// boolean to decide when to display phone authentication view
+   // @Published var showSMSCodeVerification = false
+    
+    
+    ///Not sure if the following code is needed tho!!
+    init() {
+        self.loginStatus = UserDefaults.standard.bool(forKey: "log_Status")
+        }
+    
+    //escaping function here!!
+    func verifyUserPhoneNumber(completion: @escaping (String) -> Void) {
+        
+     
+         print("Got here at least")
+        PhoneAuthProvider.provider().verifyPhoneNumber("+\(countryCode + mobileNumber)", uiDelegate: nil) { idCredential, err in
+            print("Starting to Run this")
             
             if let err = err {
                 self.errorMessage = err.localizedDescription
+                print(self.errorMessage)
+                self.showAlert.toggle()
+                completion("false")
+                return
+                
+            }
+            
+            self.idCredential = idCredential!
+            completion("true")
+          //  self.showSMSCodeVerification = true
+           // DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+               // self.alertWithTF()
+            
+        
+            
+            
+        }
+    }
+  
+  
+    func LoginUser() {
+        
+        let credential = PhoneAuthProvider.provider().credential(withVerificationID: self.idCredential, verificationCode: phoneVerificationCode)
+        
+        
+        Auth.auth().signIn (with: credential) { result, err in
+            if let error = err{
+                self.errorMessage = error.localizedDescription
                 self.showAlert.toggle()
                 return
             }
-            self.idCredential = idCredential!
+            // user Successfully Logged In....
             
+            //change app storage here, and then instantie homeview!
+            self.loginStatus = true
+            print(self.loginStatus)
+         //   HomeView()
             
         }
     }
     
-    //veriication with textBox
-    func alertWithTF() {
+
+    func reportError() {
         
-        let alert = UIAlertController(title: "Verfication", message: "Enter the OTP Code", preferredStyle: .alert)
-            
-        alert.addTextField { text in
-            text.placeholder = "123456"
-        }
-        
-        //now add an alert actiom
-        
-        //add actions for two modes
-        alert.addAction(UIAlertAction(title: "Cance;", style: .destructive, handler: nil))
-        //alert.addAction(UIAlertAction)
         
     }
-    
-    //continue, and look at other thing
-//    private func verifyCodeAndSignUp() {
-//        let credential = PhoneAuthProvider.provider().credential(withVerificationID: <#T##String#>, verificationCode: <#T##String#>)
-//        Auth.auth().signIn(with: credential) {_, err in
-//            if let err = err {
-//                print(err.localizedDescription)
-//            } else {
-//                print("User signed in with number")
-//                //function to sign up new user!
-//            }
-//            
-//        }
-//    }
-    
 }
+
+
+
+// Loggin in User...

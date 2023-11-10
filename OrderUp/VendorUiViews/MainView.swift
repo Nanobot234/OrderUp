@@ -8,7 +8,22 @@
 import SwiftUI
 
 struct MainView: View {
+    
+    @StateObject private var firebaseManager = FirebaseManager()
+   
+    //sign up View Model which will be seen throughout the environment
+//TODO: Fix this according to my understanding of environment object. 
+//    if !loginStatus  {
+//        VendorSignUpView()
+//            .environmentObject(signUpViewModel)
+//            .navigationTitle("Login")
+//
+//        //passes into the environment
+//    }
     var body: some View {
+        //likley need to place the logic
+        
+       
         TabView {
             HomeView().tabItem {
                 Label("My Items", systemImage:"list.dash")
@@ -20,6 +35,10 @@ struct MainView: View {
             }
             
         }
+        .environmentObject(firebaseManager)
+        
+       
+        
     }
 }
 

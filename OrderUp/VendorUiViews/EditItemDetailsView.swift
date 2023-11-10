@@ -26,8 +26,9 @@ struct EditItemDetailsView: View {
     
     //private var myItems: FetchedResults<Item>
     @Environment(\.managedObjectContext) var managedViewContext
-    
     @EnvironmentObject var firebaseManager: FirebaseManager
+    
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @FetchRequest private var myItems: FetchedResults<Item>

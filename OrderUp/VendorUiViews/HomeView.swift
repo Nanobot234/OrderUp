@@ -15,22 +15,31 @@ struct HomeView: View {
     
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var firebaseManager: FirebaseManager
-    
+    @EnvironmentObject var signUpModel: SignUpViewModel //this gets the signUp model from the environment
+   
         //the fetched array of Vendor items from Core Data.
+    
+    @EnvironmentObject var navRouter: Router
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var StoreItems: FetchedResults<Item>
     
     @State private var showingAddItemScreen = false
+    
+    init() {
+     //   showingAddItemScreen = signUpModel.showSMSCodeVerification
+    }
+    
     var body: some View {
         
-        NavigationView {
+        //now need to check the environment
+        NavigationStack {
             ZStack {
                 List {
                     ForEach(StoreItems) {item in
                         NavigationLink {
                             //class for sheet is here
                             EditItemDetailsView(item: item, itemID: item.id!)
-                                //this is the item, so will actually do the saving here!
-                                //or will change the items list here, 
+                            //this is the item, so will actually do the saving here!
+                            //or will change the items list here, 
                             
                         } label: {
                             
@@ -39,39 +48,43 @@ struct HomeView: View {
                                     let itemImage = UIImage(data: item.image!)
                                     
                                     let imageDisplayed = Image(uiImage: itemImage!)
-                                   
+                                    
                                     imageDisplayed
                                         .resizable()
                                         .frame(width:100,height: 100)
                                         .cornerRadius(25)
                                         .scaledToFit()
-                                        .border(.red)
                                     
                                     
-                                    VStack(alignment: .leading, spacing:12) {
+                                    VStack(alignment: .leading, spacing:20) {
                                         Text(item.name ?? "")
+                                            .font(.system(size: 20))
+                                            .multilineTextAlignment(.leading)
+                                        //.padding()
                                         
                                         
-                                        Text("Price: " + item.price.formatted())
+                                        //Text("Price: " + item.price.formatted())
+                                        
+                                        Text("Price not set yet")
+                                            .font(.system(size: 20))
                                     }
-                                    .border(.red)
                                     .padding(.leading,50)
                                     //.padding(EdgeInsets( leading: 2))
                                     
                                 }
-                              
+                                
                                 Text(item.itemDescription!)
+                                    .font(.system(size: 20, design: .serif))
                                     .multilineTextAlignment(.leading)
-                                    //.padding([.top],20)//dont format siunce you have string
-                                    .border(.red)
-                                    
+                                //.padding([.top],20)//dont format siunce you have string
+                                
                             }
                             
                         }
                         .padding()
-                       
+                        
                     }
-                   //Spacer()
+                    //Spacer()
                     .onDelete(perform: deleteItems)
                     .background(RoundedRectangle(cornerRadius: 12).fill(.white))
                     .listRowBackground(Color.clear)
@@ -80,26 +93,37 @@ struct HomeView: View {
                 }
                 .listStyle(.insetGrouped)
                 
-               
+                //                .navigationDestination(isPresented: $showingAddItemScreen, destination: {
+                //                    PhoneAuthView()
+                //                })
+                
+                
+                
                 .navigationTitle("My Items")
                 
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         EditButton()
                     }
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Sign out") {
+                            navRouter.loginNavPath.append(Router.ScreenRouter.choiceScreen)
+                        }
+                    }
                 }
                 .sheet(isPresented: $showingAddItemScreen) {
-                   newItemUploadView()
+                    newItemUploadView()
                 }
                 
                 AddItemButton(showingScreen: $showingAddItemScreen)
                 
-            
+                
             }
         }
+        
     }
     
-        //may need to add an alert for this
     
     func deleteItems(at offsets:IndexSet) {
         

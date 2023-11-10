@@ -16,7 +16,7 @@ class PersistenceController: ObservableObject {
     
     init() {
         container.loadPersistentStores { description, error in
-            if let error = error {
+            if error != nil {
                 print("Core data has failed. Get it right")
             }
         }
