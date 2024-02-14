@@ -12,21 +12,19 @@ struct UserChoiceView: View {
     
     @EnvironmentObject var navRouter: Router
     
-    
-    
-        
     var body: some View {
         
         VStack {
             
             NavigationLink("Vendors", value: Router.ScreenRouter.VendorScreen)
-                .frame(width: 150, height: 50)
+                .frame(width: 170, height: 50)
                 .background(Color.blue)
                 .foregroundColor(Color.white)
-                    
-            }
+                .cornerRadius(25)
+            
+        }
         
-        //Customers will come here soon!
+        
         .navigationDestination(for: Router.ScreenRouter.self) { screen in
             switch screen {
             case .VendorScreen:
@@ -34,14 +32,14 @@ struct UserChoiceView: View {
             case .CustomerScreen:
                 CustomerSearchandItemDisplayView()
             case .choiceScreen:
-                    UserChoiceView()
+                UserChoiceView()
             case .PhoneAuthScreen:
                 PhoneAuthView()
+            }
         }
     }
-        }
-       
-       
+    
+    
     
     
 }

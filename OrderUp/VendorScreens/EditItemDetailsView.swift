@@ -24,9 +24,14 @@ struct EditItemDetailsView: View {
     @State private var imageToDisplay:UIImage?
     @State private var displayImagePicker = false
     
+    @State private var numberFormatter: NumberFormatter = {
+        var nf = NumberFormatter()
+        nf.numberStyle = .currency
+        return nf
+    }()
+    
     //private var myItems: FetchedResults<Item>
     @Environment(\.managedObjectContext) var managedViewContext
-    @EnvironmentObject var firebaseManager: FirebaseManager
     
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -67,11 +72,31 @@ struct EditItemDetailsView: View {
                 }
                 
                 Section {
-                    TextField("What is the name of this item?", text: $newItemName)
-                    TextField("Any Extra things?", text: $newItemDescription)
-                    
+                    TextField("Name", text: $newItemName)
+       
                     //TextField(
+                } header: {
+                    Text("Update Item Name")
                 }
+                
+            
+                Section {
+                    TextField("Any Extra things?", text: $newItemDescription)
+                } header: {
+                    Text("Description of item")
+                }
+                
+                Section {
+                    TextField("$0.00",value: $newItemPrice, formatter: numberFormatter)
+                        .keyboardType(.decimalPad)
+                   //Maybe check for a way that first element doesnt have to be deleted
+                    //keypad here
+                } header: {
+                    Text("Item Price")
+                }
+                
+                
+                
             }
         
         .navigationTitle("Edit The Item")
@@ -87,8 +112,6 @@ struct EditItemDetailsView: View {
             
                             fetchFomCoreDatandEditWithID(items: myItems)
                         }
-                  
-                   
                 }
             }
             .sheet(isPresented: $displayImagePicker) {
@@ -96,14 +119,13 @@ struct EditItemDetailsView: View {
                 ImagePicker(selectedImage: self.$imageToDisplay)
                 
             }
-            
     }
     
     //initializer for class variabels
 //onSave: @escaping (Item) -> Void
-    init(item: Item,itemID:String) {
+    init(item: Item) {
         self.item = item
-        self.itemID = itemID //sets the member functions itemID
+        self.itemID = item.id! //sets the member functions itemID
         //self.onSave = onSave
         
         _newItemName = State(initialValue: item.name!)
@@ -126,8 +148,6 @@ struct EditItemDetailsView: View {
     /// - Parameter items: <#items description#>
     func fetchFomCoreDatandEditWithID(items: FetchedResults<Item>) {
         
-       
-        
         if let fetchedItem = items.first {
             //now will change the items here and then save it back in coreData
             
@@ -138,7 +158,10 @@ struct EditItemDetailsView: View {
             fetchedItem.price = self.newItemPrice
             
             //write the chnaged info to fireabse
-            self.firebaseManager.writeToFirebase(itemName: fetchedItem.name!, itemDescription:fetchedItem.itemDescription! , itemPrice: fetchedItem.price, image: UIImage(data: fetchedItem.image!)!, itemID: fetchedItem.id!)
+            DispatchQueue.main.async {
+                
+                FirebaseFirestoreManager.shared.uploadNewVendorItem(itemName: fetchedItem.name!, itemDescription:fetchedItem.itemDescription! , itemPrice: fetchedItem.price, image: UIImage(data: fetchedItem.image!)!, itemID: fetchedItem.id!)
+            }
             
             do {
                 try managedViewContext.save()

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PhoneAuthView: View {
     //make  binding to the code variable provided by the model class
-    @EnvironmentObject var signUpModel:SignUpViewModel
+    @EnvironmentObject var signUpModel:AuthenticationViewModel
     
     
     var body: some View {
@@ -20,10 +20,7 @@ struct PhoneAuthView: View {
             TextField("Enter Code", text: $signUpModel.phoneVerificationCode)
                 .font(.title)
                 .padding(8)
-                .background(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(style: .init(lineWidth: 2, dash: [6], dashPhase: 0))
-                )
+               
 //                .onSubmit {
 //
 //                }
@@ -32,7 +29,7 @@ struct PhoneAuthView: View {
             
                 
             Button("Submit") {
-                signUpModel.LoginUser()
+                FSAuthManager.shared.userSignIn(phoneCredential: self.signUpModel.phoneVerificationCredential, phoneVerificationCode: self.signUpModel.phoneVerificationCode)
             }
             
             if signUpModel.loginStatus {

@@ -21,17 +21,23 @@ struct newItemUploadView: View {
     //these states should be in a ViewModel class, where I publish the changes to the view correctly
     @State private var itemName = ""
     @State private var itemDescription = ""
-    @State private var itemPrice = "0.0"
+    @State private var itemPrice = 0.0
     @State private var itemUploadError = false //error that will display a message to the user if the form entry is missing
     //now set the source type for
     @State private var userSelectedImage: UIImage?
     @State private var displayImagePicker = false
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
-    @EnvironmentObject var firebaseManager: FirebaseManager
+    private var numberFormatter: NumberFormatter
+  
     
     @Environment(\.dismiss) var dismiss
     
+    init() {
+        numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.maximumFractionDigits = 2
+    }
     
     var body: some View {
         
@@ -43,7 +49,6 @@ struct newItemUploadView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 200,height: 200)
-                    
                 }
                 else {
                     Text("No Photo Selected")
@@ -65,13 +70,26 @@ struct newItemUploadView: View {
                 
                 Section {
                     TextField("What is the name of this item?", text: $itemName)
-                    TextField("Any Extra things?", text: $itemDescription)
-                    
+                } header: {
+                    Text("Item name")
                 }
                 
                 Section {
-                    TextField("Whats is the price you want to charge", text: $itemPrice).keyboardType(.decimalPad)
+                    //TextField("Any Extra things?", text: $itemDescription)
+                    TextEditor(text: $itemDescription)
+                        .foregroundStyle(.primary)
+                        .padding(.horizontal)
+                } header: {
+                    Text("Item Description")
+                }
+                
+                Section {
+                    TextField("$0.00",value: $itemPrice, formatter: numberFormatter)
+                        .keyboardType(.decimalPad)
+                   //Maybe check for a way that first element doesnt have to be deleted
                     //keypad here
+                } header: {
+                    Text("Item Price")
                 }
                 
             }
@@ -84,14 +102,16 @@ struct newItemUploadView: View {
                             print("You thought")
                             itemUploadError = true
                         } else {
+                            
+                            //Create an item object and then save it in coreData.
                             let item = Item(context: moc)
                             
                             item.image = userSelectedImage?.jpegData(compressionQuality: 0.8)
                             item.name = itemName
                             item.itemDescription = itemDescription
-                            item.price = Double(itemPrice)!
+                            item.price = itemPrice
                             item.id = String(UUID().uuidString.prefix(4))
-                            firebaseManager.writeToFirebase(itemName: itemName, itemDescription: itemDescription, itemPrice: Double(itemPrice) ?? 0.0, image: userSelectedImage!, itemID: item.id!) //saving it to firebase now
+                            FirebaseFirestoreManager.shared.uploadNewVendorItem(itemName: itemName, itemDescription: itemDescription, itemPrice: itemPrice, image: userSelectedImage!, itemID: item.id!) //saving it to firebase now
                             try? moc.save()
                             
                             //dismisses on main thread, is helful I guess

@@ -7,19 +7,10 @@
 
 import SwiftUI
 
+/// Displays various screens for a vendor in a tab form.
 struct MainView: View {
-    
-    @StateObject private var firebaseManager = FirebaseManager()
-   
-    //sign up View Model which will be seen throughout the environment
-//TODO: Fix this according to my understanding of environment object. 
-//    if !loginStatus  {
-//        VendorSignUpView()
-//            .environmentObject(signUpViewModel)
-//            .navigationTitle("Login")
-//
-//        //passes into the environment
-//    }
+     
+
     var body: some View {
         //likley need to place the logic
         
@@ -34,11 +25,7 @@ struct MainView: View {
                 Label("Orders", systemImage: "rectangle.portrait.and.arrow.right")
             }
             
-        }
-        .environmentObject(firebaseManager)
-        
-       
-        
+        }     
     }
 }
 

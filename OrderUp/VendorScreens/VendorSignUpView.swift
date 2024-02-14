@@ -12,11 +12,13 @@ import ActionButton
 ///  Displays  SMS login fields to user
 struct VendorSignUpView: View {
     
-    @EnvironmentObject var signUpModel: SignUpViewModel
+    @EnvironmentObject var signUpModel: AuthenticationViewModel
     @EnvironmentObject var router: Router
     
     @State var buttonState: ActionButtonState = .disabled(title: "Please enter your phone number", systemImage: "exclamationmark.circle")
     @State private var showSMSCodeEntryScreen = false
+    
+    
     
 //    if signUpModel.showSMSCodeVerification {
 //      showSMSCodeEntryScreen = true
@@ -47,7 +49,7 @@ struct VendorSignUpView: View {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke( Color.gray)
                         )
-                    TextField("Enter Your Phone Number", text: $signUpModel.mobileNumber)
+                    TextField("Enter Your Phone Number", text: $signUpModel.userMobileNumber)
                         .textContentType(.telephoneNumber)
                         .keyboardType(.numberPad)
                         .padding(.vertical,12)
@@ -57,7 +59,7 @@ struct VendorSignUpView: View {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.gray)
                         )
-                        .onChange(of: signUpModel.mobileNumber) {number in
+                        .onChange(of: signUpModel.userMobileNumber) {number in
                             
                             let nonDigitCharacters = CharacterSet(charactersIn: number).subtracting(CharacterSet.decimalDigits)
                             let filteredString = number.components(separatedBy: nonDigitCharacters).joined()
@@ -72,12 +74,16 @@ struct VendorSignUpView: View {
                 ActionButton(state: $buttonState, onTap: {
                 
                     buttonState = .loading(title: "Verifying", systemImage: "")
-                    signUpModel.verifyUserPhoneNumber { result in
-                        if(result == "true") {
-                            router.loginNavPath.append(Router.ScreenRouter.PhoneAuthScreen)
+                    FSAuthManager.shared.phoneNumberVerfication(countryCode: signUpModel.countryCode, mobileNumber: signUpModel.userMobileNumber) { result in
+                            
+                        if(result != nil) {
+                            self.signUpModel.phoneVerificationCredential = result!
                         }
-                    } //will verify the phone number now!!
-                    //then make a condition, where the
+                        
+                            router.loginNavPath.append(Router.ScreenRouter.PhoneAuthScreen)
+                        
+                    }
+                   
                     
                     
                 }, backgroundColor: .blue)

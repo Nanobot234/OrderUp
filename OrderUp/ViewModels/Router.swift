@@ -16,6 +16,7 @@ class Router: ObservableObject {
     
     @Published var loginNavPath = NavigationPath()
     
+    @Published var popToRoot = false
     //published variable with the enum type!!, then have the navigation
     
     var route: ScreenRouter = .choiceScreen //first
