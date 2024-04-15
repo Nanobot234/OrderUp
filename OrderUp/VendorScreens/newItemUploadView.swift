@@ -111,6 +111,8 @@ struct newItemUploadView: View {
                             item.itemDescription = itemDescription
                             item.price = itemPrice
                             item.id = String(UUID().uuidString.prefix(4))
+                            
+                            //Prevent this one!
                             FirebaseFirestoreManager.shared.uploadNewVendorItem(itemName: itemName, itemDescription: itemDescription, itemPrice: itemPrice, image: userSelectedImage!, itemID: item.id!) //saving it to firebase now
                             try? moc.save()
                             

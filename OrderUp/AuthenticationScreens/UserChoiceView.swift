@@ -15,8 +15,12 @@ struct UserChoiceView: View {
     var body: some View {
         
         VStack {
+           
+//            Button("Vendors") {
+//
+//            }
             
-            NavigationLink("Vendors", value: Router.ScreenRouter.VendorScreen)
+            NavigationLink("Vendors", value: ScreenRouter.VendorScreen)
                 .frame(width: 170, height: 50)
                 .background(Color.blue)
                 .foregroundColor(Color.white)
@@ -25,18 +29,7 @@ struct UserChoiceView: View {
         }
         
         
-        .navigationDestination(for: Router.ScreenRouter.self) { screen in
-            switch screen {
-            case .VendorScreen:
-                VendorSignUpView()
-            case .CustomerScreen:
-                CustomerSearchandItemDisplayView()
-            case .choiceScreen:
-                UserChoiceView()
-            case .PhoneAuthScreen:
-                PhoneAuthView()
-            }
-        }
+     
     }
     
     

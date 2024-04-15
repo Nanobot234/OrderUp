@@ -76,35 +76,7 @@ class FirebaseFirestoreManager {
     
     /// Retrieves the vendor code for a given vendor based on the Vendor's ID. If the vendor code doesnt not exist, a new code is created.
     /// - Parameter vendorID: the unique id of the vendor
-    /// - Returns: the vendor code
-    func getOrCreateVendorCode(vendorID:String,completion: @escaping (String) -> ()) {
-        
-        //check if he vendor code is there, if not will create it for the ID that is passed in
-        let docRef = self.db.collection("Vendors").document(vendorID)
-        
-        //check here if not in userDefualts
-        
-        //check first if there is a vendor Code, 
-        if(UserDefaults.standard.string(forKey: "personalVendorCode") == nil) {
-            
-            
-            let newVendorCode = self.createVendorCode()
-            
-            UserDefaults.standard.set(newVendorCode, forKey: "personalVendorCode") //save this into user defaults
-            self.setFeildDataForVendor(vendorID: vendorID, dataValue: newVendorCode, dataParameter: "vendorCode") //save to
-            completion(newVendorCode)
-        }
-        //case where
-        
-        docRef.getDocument { docSnapshot, err in
-            if let vendCode = docSnapshot?.get("vendorCode") as? String {
-                completion(vendCode) //
-            } else {
-                //create a vendorCode, then save it to the Firebase, then return it
-                
-            }
-        }
-    }
+   
     
     ///  Sets feild data for a particular vendor at the top level
     /// - Parameters:
@@ -131,7 +103,27 @@ class FirebaseFirestoreManager {
                         }
         }
     }
-    
+        
+    func getVendorCodefromAuthID(vendorAuthID:String) {
+        
+        let authID = vendorAuthID
+        db.collection("yourCollectionName")
+            .whereField(authID, isGreaterThan: NSNull())
+            .limit(to: 1) // Limit the result to 1 document
+            .getDocuments { (querySnapshot, error) in
+                if let error = error {
+                    print("Error getting documents: \(error)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        // Document with the specified field exists
+                        print("\(document.documentID) => \(document.data())")
+                        
+                        // Stop the loop after the first document is found
+                        break
+                    }
+                }
+        }
+    }
     
     /// creates a random 5 digit alphamueric vendor code
     /// - Returns: the vendor code

@@ -31,16 +31,38 @@ struct OrderUpApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navRouter.loginNavPath) {
-                if !signUpModel.loginStatus || navRouter.popToRoot {
+                if  UserDefaults.standard.getCurrentUserLoggedInType() == "None" {
                     UserChoiceView()
                         .onAppear {
-                            navRouter.popToRoot = false
+                            signUpModel.vendorLoginStatus = false
                     }
+                        .navigationDestination(for: ScreenRouter.self) { screen in
+                            switch screen {
+                            case .VendorScreen:
+                                VendorSignUpView()
+                            case .CustomerScreen:
+                                CustomerSearchandItemDisplayView()
+                            case .choiceScreen:
+                                UserChoiceView()
+                                    .navigationBarBackButtonHidden(true)
+                            case .VendorPhoneAuthScreen:
+                                PhoneAuthView(userType: "vendor")
+                            case .VendorHomeScreen:
+                                VendorTabs(selection: VendorTabsScreens.itemsScreen)
+                                    .navigationBarBackButtonHidden(true)
+                            }
+                        }
                    
-            } else {
-                MainView()
+                } else if(UserDefaults.standard.getCurrentUserLoggedInType() == "Vendor") {
+                    //Maybe change this to userDefaults condfition
+                    VendorTabs(selection: VendorTabsScreens.itemsScreen)
+                }
+                    else {
+                        CustomerSearchandItemDisplayView()
+                    }
             }
-        }
+            
+        
             .environmentObject(signUpModel)
             .environmentObject(navRouter)
             .environment(\.managedObjectContext, persistenceControl.container.viewContext)
@@ -49,6 +71,7 @@ struct OrderUpApp: App {
         }
         .onChange(of: scenePhase) { _ in
             persistenceControl.save()
+            
         }
         
         

@@ -11,6 +11,7 @@ import ActionButton
 
 ///  Displays  SMS login fields to user
 struct VendorSignUpView: View {
+   
     
     @EnvironmentObject var signUpModel: AuthenticationViewModel
     @EnvironmentObject var router: Router
@@ -18,14 +19,6 @@ struct VendorSignUpView: View {
     @State var buttonState: ActionButtonState = .disabled(title: "Please enter your phone number", systemImage: "exclamationmark.circle")
     @State private var showSMSCodeEntryScreen = false
     
-    
-    
-//    if signUpModel.showSMSCodeVerification {
-//      showSMSCodeEntryScreen = true
-//
-//    }
-    
-  //   @FocusState var focus: FocusableField?
     
     var body: some View {
       
@@ -60,31 +53,23 @@ struct VendorSignUpView: View {
                                 .stroke(Color.gray)
                         )
                         .onChange(of: signUpModel.userMobileNumber) {number in
-                            
-                            let nonDigitCharacters = CharacterSet(charactersIn: number).subtracting(CharacterSet.decimalDigits)
-                            let filteredString = number.components(separatedBy: nonDigitCharacters).joined()
-                            if(number == filteredString && number.count == 10) {
-                                buttonState = .enabled(title: "Next", systemImage: "checkmark.circle")
-                            } else {
-                                buttonState = .disabled(title: "Please enter your phone number", systemImage: "exclamationmark.circle")
-                            }
+                            verifyPhoneNumber(enteredNum: number)
                         }
                 }
                 
                 ActionButton(state: $buttonState, onTap: {
                 
                     buttonState = .loading(title: "Verifying", systemImage: "")
-                    FSAuthManager.shared.phoneNumberVerfication(countryCode: signUpModel.countryCode, mobileNumber: signUpModel.userMobileNumber) { result in
+                    FSAuthManager.shared.phoneNumberVerfication(countryCode: signUpModel.countryCode, mobileNumber: signUpModel.userMobileNumber) { result, errMessage  in
                             
                         if(result != nil) {
                             self.signUpModel.phoneVerificationCredential = result!
+                        } else {
+                            //Will display error message to the use rher
                         }
                         
-                            router.loginNavPath.append(Router.ScreenRouter.PhoneAuthScreen)
-                        
+                            router.loginNavPath.append(ScreenRouter.VendorPhoneAuthScreen)
                     }
-                   
-                    
                     
                 }, backgroundColor: .blue)
                 
@@ -99,6 +84,20 @@ struct VendorSignUpView: View {
             
         
     }
+    
+    func verifyPhoneNumber(enteredNum:String) {
+        
+        let nonDigitCharacters = CharacterSet(charactersIn: enteredNum).subtracting(CharacterSet.decimalDigits)
+        let filteredString = enteredNum.components(separatedBy: nonDigitCharacters).joined()
+        if(enteredNum == filteredString && enteredNum.count == 10) {
+            buttonState = .enabled(title: "Next", systemImage: "checkmark.circle")
+        } else {
+            buttonState = .disabled(title: "Please enter your phone number", systemImage: "exclamationmark.circle")
+        }
+
+    }
+    
+    
 }
 
 

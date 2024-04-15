@@ -18,14 +18,20 @@ import SwiftUI
 //might need to change name toLOgin
 
 
+///  manages authentication and sign in in the application
  class AuthenticationViewModel:ObservableObject {
+     
+     @StateObject var navRouter = Router()
 
-    @Published var loginStatus: Bool {
+    @Published var vendorLoginStatus: Bool {
         didSet {
-            UserDefaults.standard.set(loginStatus,forKey: "log_Status")
+            UserDefaults.standard.set(vendorLoginStatus,forKey: "vendor_login_status")
+            
         } //will change the login status based oon this line here!, updates the environment as well
-       
+  
     }
+     
+     
     
     ///  The auth ID of the vendor
     ///
@@ -34,8 +40,6 @@ import SwiftUI
         didSet {
             UserDefaults.standard.set(vendorAuthID, forKey: "vendorAuthID")
         }
-            
-    
 
     }
     
@@ -66,7 +70,7 @@ import SwiftUI
     
     ///Not sure if the following code is needed tho!!
     init() {
-        self.loginStatus = UserDefaults.standard.bool(forKey: "log_Status")
+        self.vendorLoginStatus = UserDefaults.standard.bool(forKey: "vendor_login_status")
         self.vendorAuthID = UserDefaults.standard.string(forKey: "vendorAuthID") ?? ""
 //
         }
@@ -74,7 +78,34 @@ import SwiftUI
     //escaping function here!!
     
     // Think this needs to be in the FireStore operations!
-    
+     func verifyPhoneNumber() {
+         
+         FSAuthManager.shared.phoneNumberVerfication(countryCode: countryCode, mobileNumber: userMobileNumber) { idCredential, errMsg in
+             
+             if(idCredential != nil) {
+                 self.phoneVerificationCredential = idCredential!
+             } else {
+                 self.phoneSignInErrorMessage = errMsg!
+             }
+         }
+     }
+     
+     func vendorSignIn(completion: @escaping (Bool) -> Void) {
+          
+         FSAuthManager.shared.userSignIn(phoneCredential: phoneVerificationCredential, phoneVerificationCode: phoneVerificationCode) { resultarr, errMsg in
+             
+             if(resultarr != nil) {
+                 self.vendorAuthID = resultarr![0]
+                 self.vendorLoginStatus = Bool(resultarr![1])!
+                 UserDefaults.standard.setCurrentUserLoggedInType(userType: "Vendor") //sets the logged in user as a vendor
+                //want to set the current logged in user
+                 completion(true)
+             } else {
+                 self.phoneSignInErrorMessage = errMsg!
+                 completion(false)
+             }
+         }
+     }
   
     
     

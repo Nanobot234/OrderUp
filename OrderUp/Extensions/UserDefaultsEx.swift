@@ -20,8 +20,12 @@ extension UserDefaults {
         return UserDefaults.standard.string(forKey: vendorAuthID)!
     }
     
-    ///  Returns the current vendors auth ID
+    ///  Returns the AuthId of the current vendor thats logged in
    
+    
+    func setVendorAuthID(vendorAuthID: String) {
+        UserDefaults.standard.set(vendorAuthID, forKey: "vendorAuthID")
+    }
     func getCurrentVendorAuthID() -> String {
         
         return UserDefaults.standard.string(forKey: "vendorAuthID")!
@@ -34,4 +38,18 @@ extension UserDefaults {
                return object(forKey: key) != nil
            }
     
+    func setCurrentUserLoggedInType(userType:String) {
+        switch userType {
+        case "Customer":
+            UserDefaults.standard.set("Customer", forKey: "loggedInUserType")
+        case "Vendor":
+            UserDefaults.standard.set("Vendor", forKey: "loggedInUserType")
+        default:
+            return
+        }
+    }
+    
+    func getCurrentUserLoggedInType() -> String {
+        return UserDefaults.standard.string(forKey: "loggedInUserType") ?? "None"
+    }
 }

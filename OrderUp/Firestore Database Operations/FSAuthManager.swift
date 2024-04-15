@@ -25,7 +25,7 @@ class FSAuthManager {
     
     //Add the viewModel here
 
-    func phoneNumberVerfication(countryCode:String,mobileNumber:String,completion: @escaping (Any) -> Void) {
+    func phoneNumberVerfication(countryCode:String,mobileNumber:String,completion: @escaping (String?,String?) -> Void) {
         
         PhoneAuthProvider.provider().verifyPhoneNumber("+\(countryCode + mobileNumber)", uiDelegate: nil) { idCredential, err in
             
@@ -36,18 +36,13 @@ class FSAuthManager {
                 
                 let verifyError = err as NSError
                 
-                switch verifyError.code {
-                case AuthErrorCode.invalidPhoneNumber.rawValue:
-                    
-                    self.errMessage = "Invalid Phone Number"
-                    completion(false)
-                default:
-                    print(verifyError.localizedDescription)
-                }
+                let errorMessage = FirebaseErrors.getFbAuthErrorMessage(fbErrorCode: verifyError.code)
+                
+                completion(nil,errorMessage)
                 
             }
             
-            completion(idCredential!)
+            completion(idCredential!,nil)
            
             
             
@@ -57,71 +52,66 @@ class FSAuthManager {
     //first clean up variables
     //then set the error code, or messages
     //then delete from aiuthentication model
-    func userSignIn(phoneCredential:String,phoneVerificationCode:String) -> [String]  {
+    func userSignIn(phoneCredential:String,phoneVerificationCode:String, completion:@escaping ([String]?,String?) -> Void)  {
         
         let credential = PhoneAuthProvider.provider().credential(withVerificationID: phoneCredential, verificationCode: phoneVerificationCode)
         
+ 
         Auth.auth().signIn (with: credential) { result, err in
             
-            if let error = err{
-                
-                let signInError = error as NSError
-                
-                //TODO: Add errors awithc statements here!
-              //  self.authModel.phoneSignInErrorMessage = error.localizedDescription
-                return
-            }
-            // user Successfully Logged In....
-            //result?.user.uid the user ID!
-            
-            
-           //this is userdefaults
-            self.authModel.vendorAuthID = result!.user.uid
-    
-            //now will check if vendorCode exists in userDefaults if not will create it
-            
-            
-            //create vendor code! then save it in user defaulta,
-            
-            //change app storage here, and then instantie homeview!
-            
-            //this can be saved in user defaults as well
+            if let signInerror = err {
 
-            let values = [result!.user.uid,"true"]
+                let verifyError =  signInerror as NSError //(Make into one)
+                
+                let errorMessage = FirebaseErrors.getFbAuthErrorMessage(fbErrorCode: verifyError.code)
+                     
+                completion(nil,errorMessage)
+                }
+                
+  
+            let signInResult = [result!.user.uid,"true"]
+         
+            UserDefaults.standard.set(result!.user.uid, forKey: "vendorAuthID") //sets the current logged in vendors iD, into the local storage
+            
+            self.getOrCreateVendorCode(vendorAuthID: result!.user.uid) //create the vendor code for the user here.
+            
+            completion(signInResult,nil)
+           
             //TODO: Check if nav bar (back button)can be hidden on a certain page
             
         }
+ 
     }
     
     /// Retrives the vendor code from local storage if it exists, or creates one if it doesnt
     ///
     /// The vendor code is always tied to the authID of the current logged in user. When a new vendor code is created, the code is also saved in Firebase.
     /// - Parameter completion: <#completion description#>
-    func getOrCreateVendorCode(completion: @escaping (String) -> ()) {
+    func getOrCreateVendorCode(vendorAuthID:String) {
         
-        //check if he vendor code is there, if not will create it for the ID that is passed in
-     
-        //check here if not in userDefualts
+       //ok so need to make sure if the auth ID
         
-        //check first if there is a vendor Code,
-        if(UserDefaults.standard.string(forKey: authModel.vendorAuthID) == nil) {
-  
+        if(UserDefaults.standard.string(forKey: vendorAuthID) == nil) {
+            
+            //need to store the
+                //check if firebase has a vendorCode for that authID
+            
+            
             let newVendorCode = self.createVendorCode()
             
-            UserDefaults.standard.set(newVendorCode, forKey: authModel.vendorAuthID) //save the vendorCode into userCefaults with the key being the currently logged in user
+            UserDefaults.standard.set(newVendorCode, forKey: vendorAuthID) //save the vendorCode into userCefaults with the key being the currently logged in user
             FirebaseFirestoreManager.shared.setFeildDataForVendor(vendorID: newVendorCode, dataValue: newVendorCode, dataParameter: "vendorCode") //save to
-            completion(newVendorCode)
+            FirebaseFirestoreManager.shared.setFeildDataForVendor(vendorID: newVendorCode, dataValue: vendorAuthID, dataParameter: "authID")
+           
         } else {
-            let vendorCode = UserDefaults.standard.string(forKey: authModel.vendorAuthID)!
-            completion(vendorCode)
+            let vendorCode = UserDefaults.standard.string(forKey: vendorAuthID)!
+           
         }
         //case where
         
        
     }
-    
-    
-    
+ 
     /// creates a random 5 digit alphamueric vendor code
     /// - Returns: the vendor code
     func createVendorCode() -> String {

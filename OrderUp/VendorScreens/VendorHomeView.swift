@@ -10,7 +10,7 @@ import CoreData
 
 
 /// Screen that displays items being sold by the logged in vendor
-struct HomeView: View {
+struct VendorHomeView: View {
     //TODO: Need to add a dismiss in the enviromnment!!
     //managed object
     
@@ -22,15 +22,17 @@ struct HomeView: View {
     @EnvironmentObject var navRouter: Router //used to navigate...
     @FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var StoreItems: FetchedResults<Item>
     
+    @EnvironmentObject var authModel: AuthenticationViewModel
+    
     @State private var showingAddItemScreen = false
     @State var vendorCode = ""
 
-
+        
     var body: some View {
         
         //now need to check the environment
         NavigationView {
-                
+            
             ZStack {
                 
                 VStack {
@@ -38,9 +40,10 @@ struct HomeView: View {
                         .font(.headline) //Check here?
                     ItemList
                 }
-         
+                
                 .navigationTitle("My Items")
                 .navigationBarTitleDisplayMode(.large)
+                .navigationBarBackButtonHidden(true)
                 
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
@@ -49,13 +52,13 @@ struct HomeView: View {
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
                         
-                        
-                       // NavigationLink("Sign Out", value: Router.ScreenRouter.choiceScreen)
-     
-                        Button("Sign out") {
-                       //     navRouter.loginNavPath.append(Router.ScreenRouter.PhoneAuthScreen)
-                            navRouter.popToRoot = true
+                        Button("Sign Out") {
+                            authModel.vendorLoginStatus = false
+                            print("Count of nav is: \(navRouter.loginNavPath.count)")
+                            navRouter.loginNavPath.removeLast(navRouter.loginNavPath.count)
                         }
+                        
+                        
                     }
                 }
                 .sheet(isPresented: $showingAddItemScreen) {
@@ -67,8 +70,9 @@ struct HomeView: View {
                 
             }
         }
+        
         .onAppear {
-         //   vendorCode = UserDefaults.standard.getCurrentVendorCode()
+          vendorCode = UserDefaults.standard.getCurrentVendorCode()
 
         }
         
@@ -189,6 +193,6 @@ struct AddItemButton: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        VendorHomeView()
     }
 }
