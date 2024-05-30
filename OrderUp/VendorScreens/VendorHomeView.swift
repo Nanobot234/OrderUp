@@ -9,14 +9,13 @@ import SwiftUI
 import CoreData
 
 
-/// Screen that displays items being sold by the logged in vendor
+/// Screen that displays items being sold by the authenticated vendor
 struct VendorHomeView: View {
     //TODO: Need to add a dismiss in the enviromnment!!
     //managed object
     
     
-//    var vendorID = UserDefaults.standard.string(forKey: "userID")
-    
+
     @Environment(\.managedObjectContext) var moc
     
     @EnvironmentObject var navRouter: Router //used to navigate...
@@ -38,7 +37,12 @@ struct VendorHomeView: View {
                 VStack {
                     Text("Vendor Code" + vendorCode)
                         .font(.headline) //Check here?
-                    ItemList
+                    
+                    if StoreItems.count > 0 {
+                        ItemList
+                    } else {
+                        
+                    }
                 }
                 
                 .navigationTitle("My Items")
@@ -53,9 +57,11 @@ struct VendorHomeView: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         
                         Button("Sign Out") {
-                            authModel.vendorLoginStatus = false
-                            print("Count of nav is: \(navRouter.loginNavPath.count)")
-                            navRouter.loginNavPath.removeLast(navRouter.loginNavPath.count)
+                            withAnimation {
+                                authModel.vendorLoginStatus = false
+                                navRouter.loginNavPath.removeLast(navRouter.loginNavPath.count)
+                                authModel.signOutUser()
+                            }
                         }
                         
                         
@@ -66,14 +72,16 @@ struct VendorHomeView: View {
                 }
                 
                 AddItemButton(showingScreen: $showingAddItemScreen)
-                
-                
+            }
+            .overlay(alignment: .center) {
+                noItemsOverLay
             }
         }
         
         .onAppear {
           vendorCode = UserDefaults.standard.getCurrentVendorCode()
-
+            authModel.stopMonitoringAuthState()
+                
         }
         
     }
@@ -101,6 +109,7 @@ struct VendorHomeView: View {
     }
     
     var ItemList: some View {
+        
         List {
             ForEach(StoreItems) {(item: Item) in
                 NavigationLink {
@@ -158,6 +167,23 @@ struct VendorHomeView: View {
         .listStyle(.insetGrouped)
 
     }
+    
+    var noItemsOverLay: some View {
+        if(StoreItems.isEmpty) {
+            return AnyView(
+                VStack(spacing: 10) {
+                    Text("No Items")
+                        .font(.system(size:30))
+                        .fontWeight(.bold)
+                    Text("Press the add button to add items")
+                }
+            )
+        } else {
+            return AnyView(EmptyView())
+        }
+    }
+    
+    
 }
  
 

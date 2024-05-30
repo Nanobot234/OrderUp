@@ -60,27 +60,25 @@ struct VendorSignUpView: View {
                 ActionButton(state: $buttonState, onTap: {
                 
                     buttonState = .loading(title: "Verifying", systemImage: "")
+                    
+                    //verifies the user;s number!
                     FSAuthManager.shared.phoneNumberVerfication(countryCode: signUpModel.countryCode, mobileNumber: signUpModel.userMobileNumber) { result, errMessage  in
-                            
+                        
                         if(result != nil) {
                             self.signUpModel.phoneVerificationCredential = result!
                         } else {
                             //Will display error message to the use rher
                         }
+                        signUpModel.userMobileNumber = "" //clears the phoneNumber for security purposes!!
                         
-                            router.loginNavPath.append(ScreenRouter.VendorPhoneAuthScreen)
+                        router.loginNavPath.append(ScreenRouter.VendorPhoneAuthScreen)
+                        
                     }
                     
                 }, backgroundColor: .blue)
-                
-                //show the sms verification screen, if you se the binding to true.
-//                if signUpModel.showSMSCodeVerification {
-//
-//                  showSMSCodeEntryScreen = true
-//                }
-              
-            }
+                }
             .padding()
+           
             
         
     }

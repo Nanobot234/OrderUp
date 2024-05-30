@@ -54,12 +54,11 @@ enum ScreenRouter: Codable {
 //}
 
 class Router: ObservableObject {
+    @Published var loginNavPath:NavigationPath 
+//        didSet {
+//            savePath()
+//        }
     
-    @Published var loginNavPath:NavigationPath {
-        didSet {
-            savePath()
-        }
-    }
     
     private let savedNavPath = URL.documentsDirectory.appending(path: "SavedNavPath")
     
@@ -88,10 +87,7 @@ class Router: ObservableObject {
         }
     }
     
-    func goToVendorScreen() {
-        loginNavPath.append(ScreenRouter.VendorHomeScreen)
-    }
-    
+   
 //
 //    /case .VendorScreen:
 //    //    VendorSignUpView()

@@ -24,6 +24,8 @@ struct EditItemDetailsView: View {
     @State private var imageToDisplay:UIImage?
     @State private var displayImagePicker = false
     
+    @State private var desiredItem: Item = Item()
+    
     @State private var numberFormatter: NumberFormatter = {
         var nf = NumberFormatter()
         nf.numberStyle = .currency
@@ -95,8 +97,13 @@ struct EditItemDetailsView: View {
                     Text("Item Price")
                 }
                 
-                
-                
+                Section{
+                    Button("Publish") {
+                        
+                        uploadNewItemToFirebase(fetchedItem: desiredItem)
+                    }
+                }
+        
             }
         
         .navigationTitle("Edit The Item")
@@ -106,7 +113,7 @@ struct EditItemDetailsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                  
-                        Button("Save") {
+                        Button("Save for Later") {
                             
                             //will need to fetch it with the id from Coredata, and then save it to firebase with that id as well
             
@@ -151,6 +158,7 @@ struct EditItemDetailsView: View {
         if let fetchedItem = items.first {
             //now will change the items here and then save it back in coreData
             
+            desiredItem = fetchedItem
             //not reached//
             fetchedItem.image = self.imageToDisplay?.jpegData(compressionQuality: 0.8) //this should be the new image gotten
             fetchedItem.name = self.newItemName
@@ -158,10 +166,7 @@ struct EditItemDetailsView: View {
             fetchedItem.price = self.newItemPrice
             
             //write the chnaged info to fireabse
-            DispatchQueue.main.async {
-                
-                FirebaseFirestoreManager.shared.uploadNewVendorItem(itemName: fetchedItem.name!, itemDescription:fetchedItem.itemDescription! , itemPrice: fetchedItem.price, image: UIImage(data: fetchedItem.image!)!, itemID: fetchedItem.id!)
-            }
+            uploadNewItemToFirebase(fetchedItem: fetchedItem)
             
             do {
                 try managedViewContext.save()
@@ -173,6 +178,12 @@ struct EditItemDetailsView: View {
                 print("\(error.localizedDescription)")
             }
             
+        }
+    }
+    
+    func uploadNewItemToFirebase(fetchedItem: Item) {
+        DispatchQueue.main.async {
+            FirebaseFirestoreManager.shared.uploadNewVendorItem(itemName: fetchedItem.name!, itemDescription:fetchedItem.itemDescription! , itemPrice: fetchedItem.price, image: UIImage(data: fetchedItem.image!)!, itemID: fetchedItem.id!)
         }
     }
 }

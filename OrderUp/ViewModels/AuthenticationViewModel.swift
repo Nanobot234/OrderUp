@@ -21,7 +21,10 @@ import SwiftUI
 ///  manages authentication and sign in in the application
  class AuthenticationViewModel:ObservableObject {
      
-     @StateObject var navRouter = Router()
+     //@StateObject var navRouter = Router()
+     
+     @Published var currentUser: User?
+     
 
     @Published var vendorLoginStatus: Bool {
         didSet {
@@ -31,7 +34,13 @@ import SwiftUI
   
     }
      
-     
+     @Published var customerLoginStatus: Bool {
+         didSet {
+             UserDefaults.standard.set(vendorLoginStatus,forKey: "customer_login_status")
+             
+         }
+         
+     }
     
     ///  The auth ID of the vendor
     ///
@@ -63,22 +72,25 @@ import SwiftUI
     
     @Published var phoneSignInErrorMessage = ""
 
-    
+     private var handle: AuthStateDidChangeListenerHandle? //handle to use for auth state listener changes.
+     
     /// boolean to decide when to display phone authentication view
    // @Published var showSMSCodeVerification = false
     
     
     ///Not sure if the following code is needed tho!!
     init() {
-        self.vendorLoginStatus = UserDefaults.standard.bool(forKey: "vendor_login_status")
+        self.vendorLoginStatus = UserDefaults.standard.bool(forKey: "vendor_login_status") //each view will know the login status?
         self.vendorAuthID = UserDefaults.standard.string(forKey: "vendorAuthID") ?? ""
-//
+        self.currentUser = Auth.auth().currentUser //gets the current user
+        self.customerLoginStatus = UserDefaults.standard.bool(forKey: "customer_login_status")
         }
     
     //escaping function here!!
     
     // Think this needs to be in the FireStore operations!
      func verifyPhoneNumber() {
+         
          
          FSAuthManager.shared.phoneNumberVerfication(countryCode: countryCode, mobileNumber: userMobileNumber) { idCredential, errMsg in
              
@@ -90,24 +102,67 @@ import SwiftUI
          }
      }
      
-     func vendorSignIn(completion: @escaping (Bool) -> Void) {
+     /// Signs in a vendor accoutnw ith their phonenumber
+     /// - Parameter completion: <#completion description#>
+     func vendorSignIn() {
           
-         FSAuthManager.shared.userSignIn(phoneCredential: phoneVerificationCredential, phoneVerificationCode: phoneVerificationCode) { resultarr, errMsg in
+         FSAuthManager.shared.userSignIn(phoneCredential: phoneVerificationCredential, phoneVerificationCode: phoneVerificationCode, userType: "vendor") { resultarr, errMsg in
              
              if(resultarr != nil) {
-                 self.vendorAuthID = resultarr![0]
-                 self.vendorLoginStatus = Bool(resultarr![1])!
+                 self.vendorAuthID = resultarr!//this is the uid thats generated
                  UserDefaults.standard.setCurrentUserLoggedInType(userType: "Vendor") //sets the logged in user as a vendor
                 //want to set the current logged in user
-                 completion(true)
+                 
+               //  completion(true)
              } else {
                  self.phoneSignInErrorMessage = errMsg!
-                 completion(false)
+                // completion(false)
              }
          }
      }
   
+     
+     /// check for changes in the authentication state of the current user
+     func monitorAuthState() {
+         ///
+         handle = Auth.auth().addStateDidChangeListener({ auth, user in
+             self.currentUser = user
+             if let _ = user {
+                 if UserDefaults.standard.getCurrentUserLoggedInType() == "Vendor" {
+                     self.vendorLoginStatus = true
+                 } else if UserDefaults.standard.getCurrentUserLoggedInType() == "Customer" {
+                     self.customerLoginStatus = true
+                     //
+                 }
+             }
+             //now check to see if there is a recent user with the
+             //
+         })
+     }
+     
+     /// stop listening for authentication changes
+     ///
+     /// Used when a view disappears.
+     func stopMonitoringAuthState() {
+         
+         if let handle = handle {
+             Auth.auth().removeStateDidChangeListener(handle)
+         }
+     }
     
+     
+     func signOutUser() {
+         do {
+            
+                 try Auth.auth().signOut()
+                 self.currentUser = nil
+                 //continue from here!!
+             } catch {
+                 //more here/
+                 
+      
+             }
+         }
     
 
 }

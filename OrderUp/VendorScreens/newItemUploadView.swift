@@ -29,7 +29,7 @@ struct newItemUploadView: View {
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
     private var numberFormatter: NumberFormatter
-  
+    
     
     @Environment(\.dismiss) var dismiss
     
@@ -86,42 +86,32 @@ struct newItemUploadView: View {
                 Section {
                     TextField("$0.00",value: $itemPrice, formatter: numberFormatter)
                         .keyboardType(.decimalPad)
-                   //Maybe check for a way that first element doesnt have to be deleted
+                    //Maybe check for a way that first element doesnt have to be deleted
                     //keypad here
                 } header: {
                     Text("Item Price")
                 }
                 
+                Section {
+                    Button("Publish") {
+                        let item = Item(context: moc)
+                        
+                        saveOrUploadItem(reason: "firebase", item: item)
+                    }
+                }
             }
+            
             .toolbar {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    
+                    let item = Item(context: moc)
+                    
+                    Button("Save For Later") {
                         //will need to do more checks here
-                        if(itemName.isEmpty || userSelectedImage == nil) {
-                            print("You thought")
-                            itemUploadError = true
-                        } else {
-                            
-                            //Create an item object and then save it in coreData.
-                            let item = Item(context: moc)
-                            
-                            item.image = userSelectedImage?.jpegData(compressionQuality: 0.8)
-                            item.name = itemName
-                            item.itemDescription = itemDescription
-                            item.price = itemPrice
-                            item.id = String(UUID().uuidString.prefix(4))
-                            
-                            //Prevent this one!
-                            FirebaseFirestoreManager.shared.uploadNewVendorItem(itemName: itemName, itemDescription: itemDescription, itemPrice: itemPrice, image: userSelectedImage!, itemID: item.id!) //saving it to firebase now
-                            try? moc.save()
-                            
-                            //dismisses on main thread, is helful I guess
-                            DispatchQueue.main.async {
-                                dismiss()
-                            }
+                        let item = Item(context: moc)
                         
-                        }
+                        saveOrUploadItem(reason: "localsave", item: item)
                         
                     }
                     
@@ -147,11 +137,36 @@ struct newItemUploadView: View {
     }
     
     
-    //writes the items to firebase, will
-  
     
-    //need to write function to store image!
- 
+    func saveOrUploadItem(reason:String, item: Item) {
+        
+        if reason == "localsave" {
+            if(itemName.isEmpty || userSelectedImage == nil) {
+                print("You thought")
+                itemUploadError = true
+            } else {
+                
+                //Create an item object and then save it in coreData.
+                let item = Item(context: moc)
+                
+                item.image = userSelectedImage?.jpegData(compressionQuality: 0.8)
+                item.name = itemName
+                item.itemDescription = itemDescription
+                item.price = itemPrice
+                item.id = String(UUID().uuidString.prefix(4))
+                
+                //Prevent this one!
+                
+                try? moc.save()
+                
+            }
+            
+        } else if reason == "firebase" {
+            DispatchQueue.main.async {
+                FirebaseFirestoreManager.shared.uploadNewVendorItem(itemName: item.name!, itemDescription:item.itemDescription! , itemPrice: item.price, image: UIImage(data: item.image!)!, itemID: item.id!)
+            }
+        }
+    }
 }
 
 

@@ -614,16 +614,48 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "E3DDF6C9-762B-4F43-A79B-B856B03E3114"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OrderUp/VendorScreens/EditItemDetailsView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
             landmarkName = "fetchFomCoreDatandEditWithID(items:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E3DDF6C9-762B-4F43-A79B-B856B03E3114 - 182007e1925691e0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderUp.EditItemDetailsView.fetchFomCoreDatandEditWithID(items: SwiftUI.FetchedResults&lt;OrderUp.Item&gt;) -&gt; ()"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/VendorScreens/EditItemDetailsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "166"
+                  endingLineNumber = "166"
+                  offsetFromSymbolStart = "1416">
+               </Location>
+               <Location
+                  uuid = "E3DDF6C9-762B-4F43-A79B-B856B03E3114 - 182007e1925691e0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderUp.EditItemDetailsView.fetchFomCoreDatandEditWithID(items: SwiftUI.FetchedResults&lt;OrderUp.Item&gt;) -&gt; ()"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/VendorScreens/EditItemDetailsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "166"
+                  endingLineNumber = "166"
+                  offsetFromSymbolStart = "1940">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -693,38 +725,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "31C83317-B3DB-4512-B4D7-6113A40FC89E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OrderUpApp.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8701819C-FEB1-4BCB-91C2-8DD235B717E4"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OrderUp/VendorScreens/VendorHomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "5D227079-BEE7-403E-9553-74558A7C23B8"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -732,8 +732,8 @@
             filePath = "OrderUp/AuthenticationScreens/PhoneAuthView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "gotoVendorHome()"
             landmarkType = "7">
          </BreakpointContent>
@@ -741,47 +741,63 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FD205B2E-75CF-4847-BAE9-88D7420A9A8F"
+            uuid = "F329184E-2621-4DB2-B180-D691A5A8AF73"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OrderUpApp.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
             landmarkName = "body"
             landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5F9FF39F-F521-44D3-B619-858AFBA3161F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OrderUp/Firestore Database Operations/FSAuthManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "userSignIn(phoneCredential:phoneVerificationCode:userType:completion:)"
+            landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "FD205B2E-75CF-4847-BAE9-88D7420A9A8F - bf1310701ccf5e8f"
+                  uuid = "5F9FF39F-F521-44D3-B619-858AFBA3161F - fabc80f1ee904642"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.navigationDestination&lt;&#x3c4;_0_0, &#x3c4;_0_1 where &#x3c4;_1_0: Swift.Hashable, &#x3c4;_1_1: SwiftUI.View&gt;(for: &#x3c4;_1_0.Type, destination: (&#x3c4;_1_0) -&gt; &#x3c4;_1_1) -&gt; some&gt;&gt;.0, OrderUp.VendorTabs&gt;, OrderUp.CustomerSearchandItemDisplayView&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.environment&lt;&#x3c4;_0_0&gt;(Swift.WritableKeyPath&lt;SwiftUI.EnvironmentValues, &#x3c4;_1_0&gt;, &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in OrderUp.OrderUpApp.body.getter : some"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRAuthDataResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in OrderUp.FSAuthManager.userSignIn(phoneCredential: Swift.String, phoneVerificationCode: Swift.String, userType: Swift.String, completion: (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "OrderUp"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUpApp.swift"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/Firestore%20Database%20Operations/FSAuthManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "39"
-                  endingLineNumber = "39"
-                  offsetFromSymbolStart = "968">
+                  startingLineNumber = "81"
+                  endingLineNumber = "81"
+                  offsetFromSymbolStart = "684">
                </Location>
                <Location
-                  uuid = "FD205B2E-75CF-4847-BAE9-88D7420A9A8F - 36fd7685a295d034"
+                  uuid = "5F9FF39F-F521-44D3-B619-858AFBA3161F - fabc80f1ee9046bd"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (OrderUp.ScreenRouter) -&gt; SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;OrderUp.VendorSignUpView, OrderUp.CustomerSearchandItemDisplayView&gt;, SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.navigationBarBackButtonHidden(Swift.Bool) -&gt; some&gt;&gt;.0, OrderUp.PhoneAuthView&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.navigationBarBackButtonHidden(Swift.Bool) -&gt; some&gt;&gt;.0&gt; in closure #1 () -&gt; SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.navigationDestination&lt;&#x3c4;_0_0, &#x3c4;_0_1 where &#x3c4;_1_0: Swift.Hashable, &#x3c4;_1_1: SwiftUI.View&gt;(for: &#x3c4;_1_0.Type, destination: (&#x3c4;_1_0) -&gt; &#x3c4;_1_1) -&gt; some&gt;&gt;.0, OrderUp.VendorTabs&gt;, OrderUp.CustomerSearchandItemDisplayView&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.environment&lt;&#x3c4;_0_0&gt;(Swift.WritableKeyPath&lt;SwiftUI.EnvironmentValues, &#x3c4;_1_0&gt;, &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in OrderUp.OrderUpApp.body.getter : some"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRAuthDataResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in OrderUp.FSAuthManager.userSignIn(phoneCredential: Swift.String, phoneVerificationCode: Swift.String, userType: Swift.String, completion: (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "OrderUp"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUpApp.swift"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/Firestore%20Database%20Operations/FSAuthManager.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "41"
-                  endingLineNumber = "41"
-                  offsetFromSymbolStart = "812">
+                  startingLineNumber = "80"
+                  endingLineNumber = "80"
+                  offsetFromSymbolStart = "684">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -789,15 +805,201 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "50DC0358-7E80-480F-9733-27007B9D0BCD"
-            shouldBeEnabled = "Yes"
+            uuid = "C7B163B8-6845-4321-805C-D3D9818118FB"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "OrderUpApp.swift"
+            filePath = "OrderUp/Firestore Database Operations/FSAuthManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "userSignIn(phoneCredential:phoneVerificationCode:userType:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C7B163B8-6845-4321-805C-D3D9818118FB - fabc80f1ee9047c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRAuthDataResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in OrderUp.FSAuthManager.userSignIn(phoneCredential: Swift.String, phoneVerificationCode: Swift.String, userType: Swift.String, completion: (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/Firestore%20Database%20Operations/FSAuthManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "85"
+                  endingLineNumber = "85"
+                  offsetFromSymbolStart = "1152">
+               </Location>
+               <Location
+                  uuid = "C7B163B8-6845-4321-805C-D3D9818118FB - fabc80f1ee9047c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRAuthDataResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in OrderUp.FSAuthManager.userSignIn(phoneCredential: Swift.String, phoneVerificationCode: Swift.String, userType: Swift.String, completion: (Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/Firestore%20Database%20Operations/FSAuthManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "85"
+                  endingLineNumber = "85"
+                  offsetFromSymbolStart = "1388">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FD7508DD-2813-4BFD-BE44-71A2A2277F06"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OrderUp/AuthenticationScreens/UserChoiceView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "UserChoiceView"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "FD7508DD-2813-4BFD-BE44-71A2A2277F06 - d02304c544b6aa09"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of OrderUp.UserChoiceView.currentUser : Swift.Optional&lt;__C.FIRUser&gt;"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/AuthenticationScreens/UserChoiceView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "FD7508DD-2813-4BFD-BE44-71A2A2277F06 - 860a552ed5515fbb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderUp.UserChoiceView.currentUser.getter : Swift.Optional&lt;__C.FIRUser&gt;"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/AuthenticationScreens/UserChoiceView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "FD7508DD-2813-4BFD-BE44-71A2A2277F06 - 3c4f0585f21aafd1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderUp.UserChoiceView.currentUser.setter : Swift.Optional&lt;__C.FIRUser&gt;"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/AuthenticationScreens/UserChoiceView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "FD7508DD-2813-4BFD-BE44-71A2A2277F06 - d40fcf3b18642440"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderUp.UserChoiceView.currentUser.modify : Swift.Optional&lt;__C.FIRUser&gt;"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/AuthenticationScreens/UserChoiceView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "FD7508DD-2813-4BFD-BE44-71A2A2277F06 - 477fc11f5e2a1088"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderUp.UserChoiceView.currentUser.modify : Swift.Optional&lt;__C.FIRUser&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "FD7508DD-2813-4BFD-BE44-71A2A2277F06 - b68a45fe303ff37f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderUp.UserChoiceView.$currentUser.getter : SwiftUI.Binding&lt;Swift.Optional&lt;__C.FIRUser&gt;&gt;"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/AuthenticationScreens/UserChoiceView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "FD7508DD-2813-4BFD-BE44-71A2A2277F06 - da94446347e84ef7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 2 of OrderUp.UserChoiceView.init(navRouter: SwiftUI.EnvironmentObject&lt;OrderUp.Router&gt;, authModel: SwiftUI.EnvironmentObject&lt;OrderUp.AuthenticationViewModel&gt;, currentUser: Swift.Optional&lt;__C.FIRUser&gt;, loggedInUserType: Swift.String) -&gt; OrderUp.UserChoiceView"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/AuthenticationScreens/UserChoiceView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  uuid = "FD7508DD-2813-4BFD-BE44-71A2A2277F06 - 60eb3db2846c4d9a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OrderUp.UserChoiceView.init() -&gt; OrderUp.UserChoiceView"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/AuthenticationScreens/UserChoiceView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "164">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "65A20CAF-55FA-4FAC-A983-C49B80E7212C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OrderUp/AuthenticationScreens/UserChoiceView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -805,17 +1007,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F329184E-2621-4DB2-B180-D691A5A8AF73"
-            shouldBeEnabled = "Yes"
+            uuid = "B035D904-AFFC-4A30-9F09-6B4E9BF51B44"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "OrderUpApp.swift"
+            filePath = "OrderUp/AuthenticationScreens/UserChoiceView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "body"
             landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "B035D904-AFFC-4A30-9F09-6B4E9BF51B44 - 53422478d61e8a2a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.navigationDestination&lt;&#x3c4;_0_0, &#x3c4;_0_1 where &#x3c4;_1_0: Swift.Hashable, &#x3c4;_1_1: SwiftUI.View&gt;(for: &#x3c4;_1_0.Type, destination: (&#x3c4;_1_0) -&gt; &#x3c4;_1_1) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI._ConditionalContent&lt;Swift.Optional&lt;SwiftUI._ConditionalContent&lt;OrderUp.VendorHomeView, OrderUp.CustomerHomeView&gt;&gt;, SwiftUI.NavigationStack&lt;SwiftUI.NavigationPath, &lt;&lt;opaque return type of SwiftUI.View.navigationDestination&lt;&#x3c4;_0_0, &#x3c4;_0_1 where &#x3c4;_1_0: Swift.Hashable, &#x3c4;_1_1: SwiftUI.View&gt;(for: &#x3c4;_1_0.Type, destination: (&#x3c4;_1_0) -&gt; &#x3c4;_1_1) -&gt; some&gt;&gt;.0&gt;&gt; in OrderUp.UserChoiceView.body.getter : some"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/AuthenticationScreens/UserChoiceView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50"
+                  offsetFromSymbolStart = "348">
+               </Location>
+               <Location
+                  uuid = "B035D904-AFFC-4A30-9F09-6B4E9BF51B44 - 629121de04f9a4ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (OrderUp.ScreenRouter) -&gt; SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;SwiftUI._ConditionalContent&lt;OrderUp.VendorSignUpView, OrderUp.CustomerSearchandItemDisplayView&gt;, SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.navigationBarBackButtonHidden(Swift.Bool) -&gt; some&gt;&gt;.0, OrderUp.PhoneAuthView&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.navigationBarBackButtonHidden(Swift.Bool) -&gt; some&gt;&gt;.0&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.navigationDestination&lt;&#x3c4;_0_0, &#x3c4;_0_1 where &#x3c4;_1_0: Swift.Hashable, &#x3c4;_1_1: SwiftUI.View&gt;(for: &#x3c4;_1_0.Type, destination: (&#x3c4;_1_0) -&gt; &#x3c4;_1_1) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI._ConditionalContent&lt;Swift.Optional&lt;SwiftUI._ConditionalContent&lt;OrderUp.VendorHomeView, OrderUp.CustomerHomeView&gt;&gt;, SwiftUI.NavigationStack&lt;SwiftUI.NavigationPath, &lt;&lt;opaque return type of SwiftUI.View.navigationDestination&lt;&#x3c4;_0_0, &#x3c4;_0_1 where &#x3c4;_1_0: Swift.Hashable, &#x3c4;_1_1: SwiftUI.View&gt;(for: &#x3c4;_1_0.Type, destination: (&#x3c4;_1_0) -&gt; &#x3c4;_1_1) -&gt; some&gt;&gt;.0&gt;&gt; in OrderUp.UserChoiceView.body.getter : some"
+                  moduleName = "OrderUp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nanabonsu/Documents/OrderUp/OrderUp/AuthenticationScreens/UserChoiceView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50"
+                  offsetFromSymbolStart = "840">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

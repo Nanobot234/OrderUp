@@ -32,14 +32,9 @@ struct PhoneAuthView: View {
             Button("Submit") {
                 if(userType == "vendor") {
                     Task {
-                        signUpModel.vendorSignIn { result in
-                            if result {
-                                gotoVendorHome()
-                            } else {
-                                //TODO: Show an error message to the user
-                            }
-                        }
-                        
+                        signUpModel.vendorSignIn() //sign in here
+        
+                        //need to add code to show alert to the user, when there is an error
                        // gotoVendorHome()
                     }
                 }
@@ -59,6 +54,7 @@ struct PhoneAuthView: View {
         navRouter.loginNavPath.append(ScreenRouter.VendorHomeScreen)
     }
 }
+
 
 
 
