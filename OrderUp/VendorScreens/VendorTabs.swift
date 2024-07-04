@@ -15,24 +15,25 @@ enum VendorTabsScreens {
 /// Displays various screens for a vendor in a tab form.
 struct VendorTabs: View {
     
-    @State var selection: VendorTabsScreens
+    //@State var selection: VendorTabsScreens
 
     var body: some View {
         //likley need to place the logic
         
+    //selection: $selection
        
-        TabView(selection: $selection) {
+        TabView() {
             VendorHomeView().tabItem {
                 Label("My Items", systemImage:"list.dash")
                 
                // NavigationLink(destination: <#T##() -> View#>, label: <#T##() -> View#>)
             }
-            .tag(VendorTabsScreens.itemsScreen)
+            // .tag(VendorTabsScreens.itemsScreen)
             //add more tabs here to work with.
             OrdersView().tabItem {
                 Label("Orders", systemImage: "rectangle.portrait.and.arrow.right")
             }
-            .tag(VendorTabsScreens.ordersScreen)
+           // .tag(VendorTabsScreens.ordersScreen)
             
         }     
     }

@@ -182,7 +182,6 @@
 			isa = PBXGroup;
 			children = (
 				F2A422142A535EF6007A7285 /* VendorTabs.swift */,
-				F2161EA42A968F5C0042D260 /* VendorSignUpView.swift */,
 				F28EC9D92A2A8B3E004B32CE /* VendorHomeView.swift */,
 				F2E9BD582A55EB7F00CF85B3 /* OrdersView.swift */,
 				F2C0D3402A336C22008946B3 /* newItemUploadView.swift */,
@@ -310,6 +309,7 @@
 			children = (
 				F2CE23672AF9E93000F87BF5 /* UserChoiceView.swift */,
 				F25890C12AE89B0300D61019 /* PhoneAuthView.swift */,
+				F2161EA42A968F5C0042D260 /* VendorSignUpView.swift */,
 			);
 			path = AuthenticationScreens;
 			sourceTree = "<group>";

@@ -25,14 +25,11 @@ struct PhoneAuthView: View {
                 .padding(8)
                 .padding(10)
                 .textFieldStyle(.roundedBorder)
-            
-            
-            
-                
+    
             Button("Submit") {
                 if(userType == "vendor") {
                     Task {
-                        signUpModel.vendorSignIn() //sign in here
+                        signUpModel.vendorSignIn() // signs in the vendor and displays the correct screen.
         
                         //need to add code to show alert to the user, when there is an error
                        // gotoVendorHome()
@@ -49,10 +46,7 @@ struct PhoneAuthView: View {
         }
        
     }
-    
-    func gotoVendorHome(){
-        navRouter.loginNavPath.append(ScreenRouter.VendorHomeScreen)
-    }
+   
 }
 
 

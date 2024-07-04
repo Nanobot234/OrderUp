@@ -15,70 +15,93 @@ struct UserChoiceView: View {
     
     @EnvironmentObject var authModel:AuthenticationViewModel
     
+    @EnvironmentObject var persistenceControl: PersistenceController
 //    @State var currentUser: User? = nil
     
+    @State var isFirebaseConfigured = false
+    /// Tracks the current logged in user type as to whether its a vendor or customer.
     var loggedInUserType = UserDefaults.standard.getCurrentUserLoggedInType()
     
     var body: some View {
-        ZStack {
-            if authModel.currentUser != nil {
-                if loggedInUserType == "Vendor" {
-                    VendorHomeView()
-                } else if loggedInUserType == "Customer" {
-                    CustomerHomeView()
-                }
-            } else {
-                NavigationStack(path: $navRouter.loginNavPath) {
-                    VStack {
-                        
-                        NavigationLink(destination: VendorSignUpView()) {
-                            Text("Vendors")
-                                .frame(width: 170, height: 50)
-                                .background(Color.blue)
-                                .foregroundColor(Color.white)
-                                .cornerRadius(25)
-                        }
-                        
-                        NavigationLink("Customerss") {
+        NavigationStack(path: $navRouter.loginNavPath)  {
+      
+        
+                if authModel.currentUser == nil {
+                    //displaying buttons to allow users to sign in!
+                        VStack {
                             
+                            NavigationLink(destination: VendorSignUpView()) {
+                                Text("Vendors")
+                                    .frame(width: 170, height: 50)
+                                    .background(Color.blue)
+                                    .foregroundColor(Color.white)
+                                    .cornerRadius(25)
+                            }
+                            
+                            NavigationLink("Customerss") {
+                                
+                            }
+                            .frame(width: 170, height: 50)
+                            .background(Color.blue)
+                            .foregroundColor(Color.white)
+                            .cornerRadius(25)
                         }
-                        .frame(width: 170, height: 50)
-                        .background(Color.blue)
-                        .foregroundColor(Color.white)
-                        .cornerRadius(25)
-                    }
-                    .navigationDestination(for: ScreenRouter.self) { screen in
-                        switch screen {
-                        case .VendorScreen:
-                            VendorSignUpView()
-                        case .CustomerScreen:
-                            CustomerSearchandItemDisplayView()
-                        case .choiceScreen:
-                            UserChoiceView()
-                                .navigationBarBackButtonHidden(true)
-                        case .VendorPhoneAuthScreen:
-                            PhoneAuthView(userType: "vendor")
-                        case .VendorHomeScreen:
-                            VendorTabs(selection: VendorTabsScreens.itemsScreen)
-                                .navigationBarBackButtonHidden(true)
+                        .navigationDestination(for: ScreenRouter.self) { screen in
+                            switch screen {
+                            case .VendorScreen:
+                                VendorSignUpView()
+                            case .CustomerScreen:
+                                CustomerSearchandItemDisplayView()
+                            case .choiceScreen:
+                                UserChoiceView()
+                                    .navigationBarBackButtonHidden(true)
+                            case .VendorPhoneAuthScreen:
+                                PhoneAuthView(userType: "vendor")
+                            case .VendorHomeScreen:
+                                VendorHomeView()
+//                                VendorTabs()
+//                                    .navigationBarBackButtonHidden(true)
+                            }
                         }
+                        
                     }
-                  
-                    }
-             
-                
-
+            else {
+                VendorTabs()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .navigationBarBackButtonHidden(true)
             }
+               
         }
+        .onChange(of: authModel.currentUser) { user in
+            //when a vendor has logged in then
+//            if user != nil && loggedInUserType == "Vendor" {
+//                navRouter.loginNavPath.append(ScreenRouter.CustomerScreen)
+//            }
+        }
+                  
         .onDisappear {
             authModel.monitorAuthState()
         }
-        
-        
-        
-     
+        .onAppear {
+       //     persistenceControl.deletePersistentStore()
+        }
+
     }
     
+    /// checks if Firebase is configured
+    func configureFireabse() {
+        if FirebaseApp.app() == nil {
+                    FirebaseApp.configure()
+                }
+                // Ensure Firebase is configured
+                if FirebaseApp.app() != nil {
+                    isFirebaseConfigured = true
+                    authModel.monitorAuthState()
+                } else {
+                    // Handle configuration failure
+                    print("Failed to configure Firebase")
+                }
+    }
     
     
     

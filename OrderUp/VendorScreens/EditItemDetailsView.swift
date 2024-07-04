@@ -36,18 +36,16 @@ struct EditItemDetailsView: View {
     @Environment(\.managedObjectContext) var managedViewContext
     
     
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+ @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     @FetchRequest private var myItems: FetchedResults<Item>
 //   @FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "id == %@",itemID)) var myFetchedItems: FetchedResults<Item>
     
     
     var body: some View {
-       
-        
         //here will need to change the items borht in fireabse and coredata!
         //Form here as wwell
-       
+        NavigationView {
             Form {
                 
                 Section {
@@ -75,13 +73,13 @@ struct EditItemDetailsView: View {
                 
                 Section {
                     TextField("Name", text: $newItemName)
-       
+                    
                     //TextField(
                 } header: {
                     Text("Update Item Name")
                 }
                 
-            
+                
                 Section {
                     TextField("Any Extra things?", text: $newItemDescription)
                 } header: {
@@ -91,45 +89,41 @@ struct EditItemDetailsView: View {
                 Section {
                     TextField("$0.00",value: $newItemPrice, formatter: numberFormatter)
                         .keyboardType(.decimalPad)
-                   //Maybe check for a way that first element doesnt have to be deleted
+                    //Maybe check for a way that first element doesnt have to be deleted
                     //keypad here
                 } header: {
                     Text("Item Price")
                 }
                 
                 Section{
-                    Button("Publish") {
-                        
-                        uploadNewItemToFirebase(fetchedItem: desiredItem)
+                    ConfirmationButton(title:"Publish") {
+                        //this will save the item to Firebase
+                        FirebaseFirestoreManager.shared.uploadNewVendorItem(itemName: newItemName, itemDescription: newItemDescription, itemPrice: newItemPrice, image: imageToDisplay!, itemID: itemID)
+                        //uploadNewItemToFirebase(fetchedItem: desiredItem)
                     }
                 }
-        
+                
             }
-        
-        .navigationTitle("Edit The Item")
-        .navigationBarTitleDisplayMode(.inline)
-        
+            
+            .navigationTitle("Edit The Item")
+            .navigationBarTitleDisplayMode(.inline)
+            
             
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                 
-                        Button("Save for Later") {
-                            
-                            //will need to fetch it with the id from Coredata, and then save it to firebase with that id as well
-            
-                            fetchFomCoreDatandEditWithID(items: myItems)
-                        }
+                    
+                    Button("Save for Later") {
+                        fetchFomCoreDatandEditWithID(items: myItems)
+                    }
                 }
             }
             .sheet(isPresented: $displayImagePicker) {
-               
-                ImagePicker(selectedImage: self.$imageToDisplay)
                 
+                ImagePicker(selectedImage: self.$imageToDisplay)
             }
+        }
     }
-    
-    //initializer for class variabels
-//onSave: @escaping (Item) -> Void
+
     init(item: Item) {
         self.item = item
         self.itemID = item.id! //sets the member functions itemID
@@ -147,9 +141,7 @@ struct EditItemDetailsView: View {
         _imageToDisplay = State(initialValue: UIImage(data: self.newItemImageData))
      
     }
-    
-    
-    
+     
     /// Updates item then resaves in coreData also uploads to Firebase
     ///
     /// - Parameter items: <#items description#>
@@ -157,8 +149,7 @@ struct EditItemDetailsView: View {
         
         if let fetchedItem = items.first {
             //now will change the items here and then save it back in coreData
-            
-            desiredItem = fetchedItem
+  
             //not reached//
             fetchedItem.image = self.imageToDisplay?.jpegData(compressionQuality: 0.8) //this should be the new image gotten
             fetchedItem.name = self.newItemName

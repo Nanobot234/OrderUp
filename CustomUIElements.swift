@@ -7,10 +7,20 @@
 
 import SwiftUI
 
-struct CustomUIElements: View {
+struct ConfirmationButton: View {
+    
+    var title:String
+    var action: () -> Void
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text(title)
+            .font(.headline)
+            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: 50)
+            .background(Color.blue)
+            .foregroundColor(Color.white)
+            .cornerRadius(20)
+            .padding(.horizontal,40)
     }
+    
 }
 
 //struct RoundedNavButton:View {
@@ -21,9 +31,9 @@ struct CustomUIElements: View {
 //    }
 //}
 
-
-struct CustomUIElements_Previews: PreviewProvider {
-    static var previews: some View {
-        CustomUIElements()
-    }
-}
+//
+//struct CustomUIElements_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CustomUIElements()
+//    }
+//}

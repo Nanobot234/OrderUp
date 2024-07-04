@@ -13,10 +13,10 @@ import FirebaseStorage
 //this view will present a form for th  user to upload a new item, which will be display on main screen and eventaully saved in CoreData and firebase!
 
 
-struct newItemUploadView: View {
-    
+struct NewItemUploadView: View {
+
     @Environment(\.managedObjectContext) var moc
-    
+    @Environment(\.dismiss) var dismiss
     
     //these states should be in a ViewModel class, where I publish the changes to the view correctly
     @State private var itemName = ""
@@ -27,17 +27,11 @@ struct newItemUploadView: View {
     @State private var userSelectedImage: UIImage?
     @State private var displayImagePicker = false
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
+    //@Binding var showingScreen: Bool
+    var numberFormatter: NumberFormatter = NumberFormatter()
     
-    private var numberFormatter: NumberFormatter
     
-    
-    @Environment(\.dismiss) var dismiss
-    
-    init() {
-        numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .currency
-        numberFormatter.maximumFractionDigits = 2
-    }
+   
     
     var body: some View {
         
@@ -73,9 +67,9 @@ struct newItemUploadView: View {
                 } header: {
                     Text("Item name")
                 }
-                
+//                
                 Section {
-                    //TextField("Any Extra things?", text: $itemDescription)
+                   // TextField("Any Extra things?", text: $itemDescription)
                     TextEditor(text: $itemDescription)
                         .foregroundStyle(.primary)
                         .padding(.horizontal)
@@ -93,10 +87,9 @@ struct newItemUploadView: View {
                 }
                 
                 Section {
-                    Button("Publish") {
+                    ConfirmationButton(title:"Publish") {
                         let item = Item(context: moc)
-                        
-                        saveOrUploadItem(reason: "firebase", item: item)
+                        saveOrUploadItem(reason: "localsave&firebase", item: item)
                     }
                 }
             }
@@ -105,16 +98,19 @@ struct newItemUploadView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     
-                    let item = Item(context: moc)
-                    
                     Button("Save For Later") {
                         //will need to do more checks here
-                        let item = Item(context: moc)
-                        
+                        let item = Item(context: moc) 
                         saveOrUploadItem(reason: "localsave", item: item)
                         
                     }
                     
+                }
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                            dismiss()
+                    }
                 }
             }
             .navigationTitle("Add a new item")
@@ -133,11 +129,20 @@ struct newItemUploadView: View {
                 ImagePicker(selectedImage: self.$userSelectedImage, sourceType: self.sourceType)
             }
         }
+        .onAppear {
+       //     numberFormatter.numberStyle = .currency
+          //  numberFormatter.maximumFractionDigits = 2
+          //  showingScreen = true
+        }
         
     }
     
     
     
+    /// <#Description#>
+    /// - Parameters:
+    ///   - reason: <#reason description#>
+    ///   - item: <#item description#>
     func saveOrUploadItem(reason:String, item: Item) {
         
         if reason == "localsave" {
@@ -147,7 +152,6 @@ struct newItemUploadView: View {
             } else {
                 
                 //Create an item object and then save it in coreData.
-                let item = Item(context: moc)
                 
                 item.image = userSelectedImage?.jpegData(compressionQuality: 0.8)
                 item.name = itemName
@@ -158,13 +162,28 @@ struct newItemUploadView: View {
                 //Prevent this one!
                 
                 try? moc.save()
+                dismiss()
                 
             }
             
-        } else if reason == "firebase" {
+        } else if reason == "localsave&firebase" {
+            
+            //save both here!
+            item.image = userSelectedImage?.jpegData(compressionQuality: 0.8)
+            item.name = itemName
+            item.itemDescription = itemDescription
+            item.price = itemPrice
+            item.id = String(UUID().uuidString.prefix(4))
+            
+            //Prevent this one!
+            
+            try? moc.save()
+            dismiss()
+            
             DispatchQueue.main.async {
                 FirebaseFirestoreManager.shared.uploadNewVendorItem(itemName: item.name!, itemDescription:item.itemDescription! , itemPrice: item.price, image: UIImage(data: item.image!)!, itemID: item.id!)
             }
+            
         }
     }
 }

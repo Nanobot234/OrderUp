@@ -21,13 +21,10 @@ struct VendorSignUpView: View {
     
     
     var body: some View {
-      
-            
             VStack {
                 //Will have a text field for signing up with mobile first as option
                 //similar to uber
-             
-                
+         
                 Text("Enter your phone number")
                     .padding(20)
                 

@@ -10,134 +10,77 @@ import Firebase
 import SwiftUI
 import FirebaseFirestore
 
-
-///  Defines all the operations related to authenticating a user in Firebase
+/// Defines all the operations related to authenticating a user in Firebase
 class FSAuthManager {
-    
-    
+
+    /// Singleton instance of FSAuthManager
     static let shared = FSAuthManager()
 
-    let db = Firestore.firestore()
-    
-    var errMessage = ""
+    private let db = Firestore.firestore()
 
-    
-    
-    ///
-    
-    /// <#Description#>
+    /// Verifies a phone number using Firebase authentication
     /// - Parameters:
-    ///   - countryCode: <#countryCode description#>
-    ///   - mobileNumber: <#mobileNumber description#>
-    ///   - completion: <#completion description#>
-    func phoneNumberVerfication(countryCode:String,mobileNumber:String,completion: @escaping (String?,String?) -> Void) {
+    ///   - countryCode: The country code of the user's phone number
+    ///   - mobileNumber: The user's mobile number
+    ///   - completion: Completion handler with optional verification ID and error message
+    func phoneNumberVerification(countryCode: String, mobileNumber: String, completion: @escaping (String?, String?) -> Void) {
+        let fullPhoneNumber = "+\(countryCode)\(mobileNumber)"
         
-        PhoneAuthProvider.provider().verifyPhoneNumber("+\(countryCode + mobileNumber)", uiDelegate: nil) { idCredential, err in
-            
-            print("Starting to Run this")
-            //TODO: Check for the error and place right , error handling
-            
-            if let err = err {
-                
-                let verifyError = err as NSError
-                
+        PhoneAuthProvider.provider().verifyPhoneNumber(fullPhoneNumber, uiDelegate: nil) { verificationID, error in
+            if let error = error {
+                let verifyError = error as NSError
                 let errorMessage = FirebaseErrors.getFbAuthErrorMessage(fbErrorCode: verifyError.code)
-                
-                completion(nil,errorMessage)
-                
+                completion(nil, errorMessage)
+            } else {
+                completion(verificationID, nil)
             }
-            
-            completion(idCredential!,nil)
-           
-            
-            
         }
     }
-    
-    //first clean up variables
-    //then set the error code, or messages
-    //then delete from aiuthentication model
-    
-    
-    ///  Signs in a desired user then performs various  database operations if so
+
+    /// Signs in a user using phone authentication and performs database operations based on user type
     /// - Parameters:
-    ///   - phoneCredential: <#phoneCredential description#>
-    ///   - phoneVerificationCode: <#phoneVerificationCode description#>
-    ///   - userType: <#userType description#>
-    ///   - completion: <#completion description#>
-    func userSignIn(phoneCredential:String,phoneVerificationCode:String,userType: String, completion:@escaping (String?,String?) -> Void)  {
-        
+    ///   - phoneCredential: The verification ID received after phone number verification
+    ///   - phoneVerificationCode: The verification code sent to the user's phone
+    ///   - userType: The type of user (e.g., "vendor" or "customer")
+    ///   - completion: Completion handler with optional user ID and error message
+    func userSignIn(phoneCredential: String, phoneVerificationCode: String, userType: String, completion: @escaping (String?, String?) -> Void) {
         let credential = PhoneAuthProvider.provider().credential(withVerificationID: phoneCredential, verificationCode: phoneVerificationCode)
- 
-        Auth.auth().signIn (with: credential) { result, err in
-            
-            if let signInerror = err {
 
-                let verifyError =  signInerror as NSError //(Make into one)
-                
+        Auth.auth().signIn(with: credential) { result, error in
+            if let error = error {
+                let verifyError = error as NSError
                 let errorMessage = FirebaseErrors.getFbAuthErrorMessage(fbErrorCode: verifyError.code)
-                     
-                completion(nil,errorMessage)
-                }
+                completion(nil, errorMessage)
+            } else if let user = result?.user {
+                let userID = user.uid
+                UserDefaults.standard.set(userID, forKey: userType == "vendor" ? "vendorAuthID" : "customerAuthID")
 
-            let signInResult = result!.user.uid
-            
-            if userType == "vendor" {
-                
-                //can check if
-                UserDefaults.standard.set(result!.user.uid, forKey: "vendorAuthID") //sets the current logged in vendors iD, into the local storage            
-                self.getOrCreateVendorCode(vendorAuthID: result!.user.uid) //create the vendor code for the user here
-            } else if userType == "customer" {
-                // set te id and other t
-                UserDefaults.standard.set(result!.user.uid, forKey: "customerAuthID")
-                //maybe more here
+                if userType == "vendor" {
+                    self.getOrCreateVendorCode(vendorAuthID: userID)
+                }
+                completion(userID, nil)
+            } else {
+                completion(nil, "Unknown error occurred during sign-in.")
             }
-            
-            completion(signInResult,nil)
-           
-            //TODO: Check if nav bar (back button)can be hidden on a certain page
-            
         }
- 
     }
-    
-    /// Retrives the vendor code from local storage if it exists, or creates one if it doesnt
-    ///
-    /// The vendor code is always tied to the authID of the current logged in user. When a new vendor code is created, the code is also saved in Firebase.
-    /// - Parameter completion: <#completion description#>
-    func getOrCreateVendorCode(vendorAuthID:String) {
-        
-       //ok so need to make sure if the auth ID
-        
-        //checks if vendorAuthId hasnt been created yet.
-        if(UserDefaults.standard.string(forKey: vendorAuthID) == nil) {
-            
-            //need to store the
-                //check if firebase has a vendorCode for that authID
-            let newVendorCode = self.createVendorCode()
-            
-            UserDefaults.standard.set(newVendorCode, forKey: vendorAuthID) //save the vendorCode into userCefaults with the key being the currently logged in user
-            FirebaseFirestoreManager.shared.setFeildDataForVendor(vendorID: newVendorCode, dataValue: newVendorCode, dataParameter: "vendorCode") //save to
-            FirebaseFirestoreManager.shared.setFeildDataForVendor(vendorID: newVendorCode, dataValue: vendorAuthID, dataParameter: "authID")
-           
-        } else {
-            let vendorCode = UserDefaults.standard.string(forKey: vendorAuthID)!
-           
+
+    /// Retrieves the vendor code from local storage or creates one if it doesn't exist
+    /// - Parameter vendorAuthID: The authentication ID of the vendor
+    func getOrCreateVendorCode(vendorAuthID: String) {
+        if UserDefaults.standard.string(forKey: vendorAuthID) == nil {
+            let newVendorCode = createVendorCode()
+            UserDefaults.standard.set(newVendorCode, forKey: vendorAuthID)
+            FirebaseFirestoreManager.shared.setFieldDataForVendor(vendorID: newVendorCode, dataValue: newVendorCode, dataParameter: "vendorCode")
+            FirebaseFirestoreManager.shared.setFieldDataForVendor(vendorID: newVendorCode, dataValue: vendorAuthID, dataParameter: "authID")
         }
-        //case where
-        
-       
     }
- 
-    /// creates a random 5 digit alphamueric vendor code
-    /// - Returns: the vendor code
-    func createVendorCode() -> String {
-        
+
+    /// Creates a random 5-character alphanumeric vendor code
+    /// - Returns: The generated vendor code
+    private func createVendorCode() -> String {
         let uuid = UUID().uuidString
-        let vendorCode = String(uuid.prefix(5))
-        return vendorCode
-      
+        return String(uuid.prefix(5))
     }
-    
-    
 }
+

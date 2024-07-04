@@ -9,7 +9,11 @@ import SwiftUI
 
 /// Implements an entry feil to enter a code to search for vendor, then displays the relevant items fetched.
 struct CustomerSearchandItemDisplayView: View {
+    
+    @Environment(\.managedObjectContext) var moc
+    
     @State private var vendorCode = ""
+    
     var body: some View {
         VStack(alignment: .center, spacing: 40) {
             //Textfeild. Then when enter code, shows a grid layout of items(might have search box
